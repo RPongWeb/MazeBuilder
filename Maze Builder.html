@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<!-- Ricky Pong -->
+<html>
+	<head>
+		
+		<title></title>
+		
+		<script>
+			function MazeSection(imgSrc)
+			{
+				this.sectionImage = document.createElement("img");
+				this.sectionImage.src = imgSrc;
+				this.sectionImage.myMazeSection = this;
+			}
+			
+			function initialize ()
+			{
+				mazeOutputBox = document.getElementById("mazeout");
+				theMaze = [];
+				theMaze[0] = [];
+				currentRow = 0;
+				highlightedSection = null;
+			}
+
+			function placeSection(piece)
+			{
+				var section = new MazeSection(piece);
+				section.sectionImage.setAttribute("onclick", "highlightSection(this);");
+				theMaze[currentRow].push(section);
+				mazeOutputBox.appendChild(section.sectionImage);	
+			}
+			
+			function addNewLine()
+			{
+				currentRow++;
+				theMaze[currentRow] = [];
+				mazeOutputBox.appendChild(document.createElement("br"));
+			}		
+			
+			function removeSection()
+			{
+				if (highlightedSection == null)
+					return;
+				
+				for (var i = 0; i < theMaze.length; i++)
+				{
+					var idx = theMaze[i].indexOf(highlightedSection);
+					if (idx >= 0)
+					{
+						theMaze[i].splice(idx,1);
+						break;
+					}
+				}
+				mazeOutputBox.removeChild(highlightedSection.sectionImage);
+				highlightedSection = null;
+			}
+			
+			function highlightSection(sectionImg)
+			{
+				var ms = sectionImg.myMazeSection;
+				
+				if (highlightedSection == null)
+				{
+					highlightedSection = ms;
+					highlightedSection.sectionImage.style.opacity = 0.5;
+				}
+				else
+				{
+					highlightedSection.sectionImage.style.opacity = 1;
+					if (highlightedSection == ms)
+					{
+						highlightedSection = null;
+					}
+					else
+					{
+						highlightedSection = ms;
+						highlightedSection.sectionImage.style.opacity = 0.5;
+					}
+				}
+			}
+		</script>
+		
+		<style>		
+		</style>
+		
+</head>
+
+	<body onload="initialize();">
+	<div>	
+		<img src = "images/bottomdeadend.png" onclick ="placeSection(this.src);" />
+		<img src = "images/cross.png" onclick ="placeSection(this.src);" />
+		<img src = "images/empty.png" onclick ="placeSection(this.src);" />
+		<img src = "images/horizontal.png" onclick ="placeSection(this.src);" />
+		<img src = "images/lbottomleft.png" onclick ="placeSection(this.src);" />
+		<img src = "images/lbottomright.png" onclick ="placeSection(this.src);" />
+		<img src = "images/ltopleft.png" onclick ="placeSection(this.src);" />
+		<img src = "images/ltopright.png" onclick ="placeSection(this.src);" />
+		<img src = "images/rightdeadend.png" onclick ="placeSection(this.src);" />
+		<img src = "images/tdown.png" onclick ="placeSection(this.src);" />
+		<img src = "images/tleft.png" onclick ="placeSection(this.src);" />
+		<img src = "images/topdeadend.png" onclick ="placeSection(this.src);" />
+		<img src = "images/tright.png" onclick ="placeSection(this.src);" />
+		<img src = "images/tup.png" onclick ="placeSection(this.src);" />
+		<img src = "images/vertical.png" onclick ="placeSection(this.src);" />
+		<img src = "images/leftdeadend.png" onclick ="placeSection(this.src);" />
+	</div>	
+		<br />
+		<button onclick = "addNewLine();">Next Line</button>
+		<button onclick = "removeSection();">Remove Section</button>
+		<hr />
+		<div id = "mazeout">
+		</div>
+	</body>
+</html>
